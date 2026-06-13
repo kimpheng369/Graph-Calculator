@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Graph Calculator - Next-generation interactive graphing calculator.">
+    <title>Graph Calculator | Next-Gen Graphing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar" id="main-sidebar">
+            <button type="button" class="close-sidebar-btn" id="close-sidebar-btn" title="Collapse Sidebar">
+                ✕
+            </button>
+
+            <header class="sidebar-header">
+                <h1>Graph Calculator</h1>
+                <p>High-performance mathematical visualization</p>
+            </header>
+
+            <nav class="tabs">
+                <button type="button" class="tab-btn active" data-tab="tab-functions" id="btn-tab-functions">Functions</button>
+                <button type="button" class="tab-btn" data-tab="tab-presets" id="btn-tab-presets">Presets</button>
+                <button type="button" class="tab-btn" data-tab="tab-analysis" id="btn-tab-analysis">Analysis</button>
+                <button type="button" class="tab-btn" data-tab="tab-settings" id="btn-tab-settings">Settings</button>
+            </nav>
+
+            <main class="sidebar-body">
+                <!-- Functions Tab -->
+                <section class="tab-content active" id="tab-functions">
+                    <div class="functions-container" id="functions-list">
+                        <!-- Function rows injected here -->
+                    </div>
+                    <button type="button" class="btn add-btn" id="add-function-btn">
+                        + New Expression
+                    </button>
+
+                    <div class="variables-section" id="variables-section">
+                        <h3>Variables</h3>
+                        <div id="variables-container">
+                            <!-- Variable sliders injected here -->
+                            <p style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 20px;">
+                                Add a variable like 'a' in your function to see a slider here.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Presets Tab -->
+                <section class="tab-content" id="tab-presets">
+                    <div class="settings-section">
+                        <h3>Mathematical Models</h3>
+                        <div class="presets-list" id="presets-container"></div>
+                    </div>
+                </section>
+
+                <!-- Analysis Tab -->
+                <section class="tab-content" id="tab-analysis">
+                    <div class="settings-section">
+                        <h3>Data Points</h3>
+                        <div class="table-generator">
+                            <select id="table-fn-select" class="table-select" style="width: 100%; margin-bottom: 12px;"></select>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                                <input type="number" id="table-start" class="setting-input" value="-5" placeholder="Start">
+                                <input type="number" id="table-end" class="setting-input" value="5" placeholder="End">
+                                <input type="number" id="table-step" class="setting-input" value="1" placeholder="Step">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="generate-table-btn" style="width: 100%;">Generate Table</button>
+                        </div>
+
+                        <div class="table-output-container" id="table-output-wrap" style="margin-top: 16px;">
+                            <table class="values-table" id="values-table-el">
+                                <thead><tr><th>x</th><th>y</th></tr></thead>
+                                <tbody id="values-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Critical Points</h3>
+                        <div class="special-points-list" id="special-points-list-container"></div>
+                    </div>
+                </section>
+
+                <!-- Settings Tab -->
+                <section class="tab-content" id="tab-settings">
+                    <div class="settings-section">
+                        <h3>Viewport</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                            <div class="setting-input-wrap">
+                                <label style="font-size: 11px; color: var(--text-muted);">X Min</label>
+                                <input type="number" id="setting-xmin" class="setting-input" style="width: 100%;">
+                            </div>
+                            <div class="setting-input-wrap">
+                                <label style="font-size: 11px; color: var(--text-muted);">X Max</label>
+                                <input type="number" id="setting-xmax" class="setting-input" style="width: 100%;">
+                            </div>
+                            <div class="setting-input-wrap">
+                                <label style="font-size: 11px; color: var(--text-muted);">Y Min</label>
+                                <input type="number" id="setting-ymin" class="setting-input" style="width: 100%;">
+                            </div>
+                            <div class="setting-input-wrap">
+                                <label style="font-size: 11px; color: var(--text-muted);">Y Max</label>
+                                <input type="number" id="setting-ymax" class="setting-input" style="width: 100%;">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" style="width: 100%;" id="update-viewport-btn">Apply Viewport</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Preferences</h3>
+                        <div class="setting-row">
+                            <span class="setting-label">Trace Coordinates</span>
+                            <label class="switch"><input type="checkbox" id="toggle-trace" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="setting-row">
+                            <span class="setting-label">Critical Points</span>
+                            <label class="switch"><input type="checkbox" id="toggle-special-pts" checked><span class="slider"></span></label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Tools</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <button type="button" class="btn" id="reset-viewport-btn">Reset View</button>
+                            <button type="button" class="btn" id="clear-all-btn" style="color: var(--danger);">Clear All</button>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="export-btn" style="width: 100%; margin-top: 12px;">
+                            Export PNG
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </aside>
+
+        <!-- Sidebar Toggle (visible when sidebar is collapsed) -->
+        <button type="button" class="sidebar-toggle-btn" id="open-sidebar-btn" title="Open Sidebar">
+            ☰
+        </button>
+
+        <main class="viewport-container">
+            <canvas id="graph-canvas"></canvas>
+
+            <!-- Floating HUD Controls -->
+            <div class="canvas-hud">
+                <div class="hud-group">
+                    <button type="button" class="hud-btn" id="hud-zoom-in" title="Zoom In">+</button>
+                    <button type="button" class="hud-btn" id="hud-zoom-out" title="Zoom Out">−</button>
+                    <button type="button" class="hud-btn" id="hud-reset" title="Reset View">⌂</button>
+                </div>
+                <div class="hud-group">
+                    <button type="button" class="hud-btn" id="keyboard-trigger-btn" title="Math Keyboard">⌨</button>
+                </div>
+            </div>
+
+            <!-- Virtual Keyboard -->
+            <div class="virtual-keyboard" id="virtual-keyboard-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <span style="font-family: 'Outfit', sans-serif; font-weight: 600; color: var(--text-secondary);">Math Engine</span>
+                    <button type="button" class="hud-btn" id="close-keyboard-btn" style="width: 32px; height: 32px;">✕</button>
+                </div>
+                <div class="keyboard-grid">
+                    <button type="button" class="key-btn key-fn" data-val="sin(">sin</button>
+                    <button type="button" class="key-btn key-fn" data-val="cos(">cos</button>
+                    <button type="button" class="key-btn key-fn" data-val="tan(">tan</button>
+                    <button type="button" class="key-btn key-fn" data-val="sqrt(">√</button>
+                    <button type="button" class="key-btn key-fn" data-val="log(">log</button>
+                    <button type="button" class="key-btn" data-val="7">7</button>
+                    <button type="button" class="key-btn" data-val="8">8</button>
+                    <button type="button" class="key-btn" data-val="9">9</button>
+                    <button type="button" class="key-btn key-op" data-val="/">÷</button>
+                    <button type="button" class="key-btn key-op" data-val="backspace">⌫</button>
+
+                    <button type="button" class="key-btn key-fn" data-val="asin(">asin</button>
+                    <button type="button" class="key-btn key-fn" data-val="acos(">acos</button>
+                    <button type="button" class="key-btn key-fn" data-val="atan(">atan</button>
+                    <button type="button" class="key-btn key-fn" data-val="abs(">abs</button>
+                    <button type="button" class="key-btn key-fn" data-val="ln(">ln</button>
+                    <button type="button" class="key-btn" data-val="4">4</button>
+                    <button type="button" class="key-btn" data-val="5">5</button>
+                    <button type="button" class="key-btn" data-val="6">6</button>
+                    <button type="button" class="key-btn key-op" data-val="*">×</button>
+                    <button type="button" class="key-btn key-op" data-val="clear">AC</button>
+
+                    <button type="button" class="key-btn" data-val="x">x</button>
+                    <button type="button" class="key-btn" data-val="pi">π</button>
+                    <button type="button" class="key-btn" data-val="e">e</button>
+                    <button type="button" class="key-btn" data-val="^">^</button>
+                    <button type="button" class="key-btn" data-val="(">(</button>
+                    <button type="button" class="key-btn" data-val="1">1</button>
+                    <button type="button" class="key-btn" data-val="2">2</button>
+                    <button type="button" class="key-btn" data-val="3">3</button>
+                    <button type="button" class="key-btn key-op" data-val="-">−</button>
+                    <button type="button" class="key-btn" data-val=")">)</button>
+
+                    <button type="button" class="key-btn" data-val="0" style="grid-column: span 2;">0</button>
+                    <button type="button" class="key-btn" data-val=".">.</button>
+                    <button type="button" class="key-btn key-op" data-val="+">+</button>
+                    <button type="button" class="key-btn" data-val="," style="grid-column: span 6;">,</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="parser.js"></script>
+    <script src="calculator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
